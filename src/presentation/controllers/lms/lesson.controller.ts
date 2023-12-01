@@ -112,7 +112,7 @@ export class LessonsController {
     res: Response<ILessonResponse>
   ): Promise<void> {
     const dto = new LessonRequestDto(req.body);
-    const validationErrors = await validate(dto);
+    const validationErrors = await validate(dto); 
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -126,11 +126,16 @@ export class LessonsController {
         const id = req.params.id;
 
         const obj: ILesson = {
-          ...emptyLesson,
           ...req.body,
           id: id,
+          category: req.body.category,
+          language: req.body.language,
+          targetAudience: req.body.targetAudience,
+          rating: req.body.rating
         };
-        const updatedLesson = await lessonUseCase.updateLesson(obj);
+        const updatedLesson = await lessonUseCase.updateLesson({
+          ...dto.toUpdateData(obj),
+        });
         const lessonDto = lessonMapper.toDTO(updatedLesson);
 
         res.json({
