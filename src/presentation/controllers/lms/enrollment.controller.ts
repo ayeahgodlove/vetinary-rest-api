@@ -33,9 +33,11 @@ export class EnrollmentsController {
       });
     } else {
       try {
-        const enrollmentResponse = await enrollmentUseCase.createEnrollment(
-          dto.toData()
-        );
+        const enrollmentResponse = await enrollmentUseCase.createEnrollment({
+          ...dto.toData(),
+          completionDate: req.body.completionDate,
+          enrollmentDate: req.body.enrollmentDate,
+        });
 
         res.status(201).json({
           data: enrollmentResponse.toJSON<IEnrollment>(),

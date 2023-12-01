@@ -16,19 +16,19 @@ export class EnrollmentRequestDto {
   @IsString()
   courseId: string;
 
-  @IsNotEmpty()
-  @IsDate()
-  completionDate: Date;
+  // @IsNotEmpty()
+  // @IsDate()
+  // completionDate: Date;
 
-  @IsNotEmpty()
-  @IsDate()
-  enrollmentDate: Date;
+  // @IsNotEmpty()
+  // @IsDate()
+  // enrollmentDate: Date;
 
   constructor(data: IEnrollment) {
     this.userId = data.userId;
     this.courseId = data.courseId;
-    this.completionDate = data.completionDate;
-    this.enrollmentDate = data.enrollmentDate;
+    // this.completionDate = data.completionDate;
+    // this.enrollmentDate = data.enrollmentDate;
   }
 
   toData(): IEnrollment {
@@ -37,8 +37,8 @@ export class EnrollmentRequestDto {
       id: nanoid(10),
       userId: this.userId,
       courseId: this.courseId,
-      completionDate: this.completionDate,
-      enrollmentDate: this.enrollmentDate,
+      // completionDate: this.completionDate,
+      // enrollmentDate: this.enrollmentDate,
     };
   }
 
