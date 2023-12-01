@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "admin@2022",
+    "database": "veterinary_db",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "ayeahgodlove",
+    "password": "ostJlJ0ZlgKgyI99uxrYRiYR5tbxspp3",
+    "database": "veterinary_db",
+    "host": "dpg-cgvrip2ut4mc4ka95pl0-a.oregon-postgres.render.com",
+    "dialect": "postgres"
+  }
+}
