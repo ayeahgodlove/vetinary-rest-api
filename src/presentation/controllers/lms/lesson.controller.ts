@@ -38,7 +38,8 @@ export class LessonsController {
           category: req.body.category,
           language: req.body.language,
           targetAudience: req.body.targetAudience,
-          rating: req.body.rating
+          rating: req.body.rating,
+          courseId: req.body.courseId
         });
 
         res.status(201).json({

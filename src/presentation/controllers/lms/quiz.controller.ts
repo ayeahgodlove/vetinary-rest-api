@@ -17,10 +17,7 @@ const quizUseCase = new QuizUseCase(quizRepository);
 const quizMapper = new QuizMapper();
 
 export class QuizesController {
-  async createQuiz(
-    req: Request,
-    res: Response<IQuizResponse>
-  ): Promise<void> {
+  async createQuiz(req: Request, res: Response<IQuizResponse>): Promise<void> {
     const dto = new QuizRequestDto(req.body);
     const validationErrors = await validate(dto);
 
@@ -33,7 +30,10 @@ export class QuizesController {
       });
     } else {
       try {
-        const quizResponse = await quizUseCase.createQuiz(dto.toData());
+        const quizResponse = await quizUseCase.createQuiz({
+          ...dto.toData(),
+          lessonId: req.body.lessonId,
+        });
 
         res.status(201).json({
           data: quizResponse.toJSON<IQuiz>(),
@@ -73,10 +73,7 @@ export class QuizesController {
     }
   }
 
-  async getQuizById(
-    req: Request,
-    res: Response<IQuizResponse>
-  ): Promise<void> {
+  async getQuizById(req: Request, res: Response<IQuizResponse>): Promise<void> {
     try {
       const id = req.params.id;
 
@@ -101,10 +98,7 @@ export class QuizesController {
     }
   }
 
-  async updateQuiz(
-    req: Request,
-    res: Response<IQuizResponse>
-  ): Promise<void> {
+  async updateQuiz(req: Request, res: Response<IQuizResponse>): Promise<void> {
     const dto = new QuizRequestDto(req.body);
     const validationErrors = await validate(dto);
 
@@ -144,10 +138,7 @@ export class QuizesController {
     }
   }
 
-  async deleteQuiz(
-    req: Request,
-    res: Response<IQuizResponse>
-  ): Promise<void> {
+  async deleteQuiz(req: Request, res: Response<IQuizResponse>): Promise<void> {
     try {
       const id = req.params.id;
 

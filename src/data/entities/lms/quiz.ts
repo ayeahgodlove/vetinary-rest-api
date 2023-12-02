@@ -52,9 +52,13 @@ export class Quiz extends Model<IQuiz> {
   @Column({
     type: DataType.STRING(128),
     allowNull: false,
+    references: {
+      model: Lesson,
+      key: "id",
+    },
   })
   lessonId!: string;
 
-  @BelongsTo(() => Lesson)
+  @BelongsTo(() => Lesson, "lessonId")
   lesson!: Lesson; // Each lesson belongs to a single cou
 }

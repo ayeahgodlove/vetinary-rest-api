@@ -88,6 +88,7 @@ export class LessonRequestDto {
       keywords: data.keywords,
       difficulty: data.difficulty,
       author: data.author,
+      courseId: data.courseId
     };
   }
 }

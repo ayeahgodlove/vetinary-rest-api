@@ -113,18 +113,22 @@ export class Lesson extends Model<ILesson> {
     allowNull: false,
   })
   authorId!: string;
+  @BelongsTo(() => User, "userId")
+  user!: User;
 
   @ForeignKey(() => Course) // foreign key
   @Column({
     type: DataType.STRING(128),
     allowNull: false,
+    references: {
+      model: Course,
+      key: "id",
+    },
   })
   courseId!: string;
 
-  @BelongsTo(() => User, "userId")
-  user!: User;
 
-  @BelongsTo(() => Course)
+  @BelongsTo(() => Course, "courseId") 
   course!: Course; // Each lesson belongs to a single cou
 
   @HasMany(() => LessonReview)
