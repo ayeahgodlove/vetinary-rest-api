@@ -8,6 +8,7 @@ import {
 } from "sequelize-typescript";
 import { IQuiz } from "../../../domain/models/lms/quiz";
 import { User } from "../user";
+import { Lesson } from "./lesson";
 
 // id: string;
 // question: string;
@@ -46,4 +47,14 @@ export class Quiz extends Model<IQuiz> {
     allowNull: false,
   })
   correctAnswerIndex!: number;
+
+  @ForeignKey(() => Lesson) // foreign key
+  @Column({
+    type: DataType.STRING(128),
+    allowNull: false,
+  })
+  lessonId!: string;
+
+  @BelongsTo(() => Lesson)
+  lesson!: Lesson; // Each lesson belongs to a single cou
 }

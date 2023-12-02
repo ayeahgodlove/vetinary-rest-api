@@ -10,6 +10,8 @@ import {
 import { ILesson } from "../../../domain/models/lms/lesson";
 import { User } from "../user";
 import { LessonReview } from "../lesson-review";
+import { Course } from "./course";
+import { Quiz } from "./quiz";
 @Table({
   timestamps: true,
   paranoid: true,
@@ -112,10 +114,22 @@ export class Lesson extends Model<ILesson> {
   })
   authorId!: string;
 
+  @ForeignKey(() => Course) // foreign key
+  @Column({
+    type: DataType.STRING(128),
+    allowNull: false,
+  })
+  courseId!: string;
+
   @BelongsTo(() => User, "userId")
   user!: User;
+
+  @BelongsTo(() => Course)
+  course!: Course; // Each lesson belongs to a single cou
 
   @HasMany(() => LessonReview)
   lessonReviews!: LessonReview[];
 
+  @HasMany(() => Quiz)
+  quizes!: Quiz[]; // One course has many lessons
 }

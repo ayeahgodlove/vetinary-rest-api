@@ -5,9 +5,11 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from "sequelize-typescript";
 import { ICourse } from "../../../domain/models/lms/course";
 import { User } from "../user";
+import { Lesson } from "./lesson";
 
 @Table({
   timestamps: true,
@@ -51,4 +53,7 @@ export class Course extends Model<ICourse> {
 
   @BelongsTo(() => User, "authorId")
   user!: User;
+
+  @HasMany(() => Lesson)
+  lessons!: Lesson[]; // One course has many lessons
 }
