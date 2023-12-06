@@ -46,6 +46,10 @@ import { Enrollment } from "../../data/entities/lms/enrollment";
 import { IEnrollment } from "../../domain/models/lms/enrollment";
 import { Quiz } from "../../data/entities/lms/quiz";
 import { IQuiz } from "../../domain/models/lms/quiz";
+import { Appointment } from "../../data/entities/health/appointment";
+import { IAppointment } from "../../domain/models/health/appointment";
+import { Consultation } from "../../data/entities/health/consultation";
+import { IConsultation } from "../../domain/models/health/consultation";
 
 export class CategoryMapper {
   toDTO(category: Category): ICategory {
@@ -368,5 +372,33 @@ export class QuizMapper {
       return entity;
     });
     return _quizes;
+  }
+}
+
+export class AppointmentMapper {
+  toDTO(appointment: Appointment): IAppointment {
+    const entity = appointment.toJSON<IAppointment>();
+    return entity;
+  }
+  toDTOs(appointments: Appointment[]): IAppointment[] {
+    const _appointments = appointments.map((appointment) => {
+      const entity = appointment.toJSON<IAppointment>();
+      return entity;
+    });
+    return _appointments;
+  }
+}
+
+export class ConsultationMapper {
+  toDTO(consultation: Consultation): IConsultation {
+    const entity = consultation.toJSON<IConsultation>();
+    return entity;
+  }
+  toDTOs(consultations: Consultation[]): IConsultation[] {
+    const _consultations = consultations.map((consultation) => {
+      const entity = consultation.toJSON<IConsultation>();
+      return entity;
+    });
+    return _consultations;
   }
 }

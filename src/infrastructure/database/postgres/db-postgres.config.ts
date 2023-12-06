@@ -35,6 +35,8 @@ import { Course } from "../../../data/entities/lms/course";
 import { Lesson } from "../../../data/entities/lms/lesson";
 import { Enrollment } from "../../../data/entities/lms/enrollment";
 import { Quiz } from "../../../data/entities/lms/quiz";
+import { Appointment } from "../../../data/entities/health/appointment";
+import { Consultation } from "../../../data/entities/health/consultation";
 
 dotenv.config();
 
@@ -75,11 +77,15 @@ export class PostgresDbConfig {
         Order,
         Payment,
         ProductOrder,
+        // lms
         Course,
         Lesson,
         Enrollment,
         Quiz,
         LessonReview,
+        // health
+        Appointment,
+        Consultation
       ],
       logging: false,
       pool: {

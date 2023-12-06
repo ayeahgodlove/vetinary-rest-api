@@ -35,6 +35,8 @@ import enrollmentRouter from "./presentation/routes/lms/enrollment.route";
 import quizRouter from "./presentation/routes/lms/quiz.route";
 import productReviewRouter from "./presentation/routes/product-review.route";
 import lessonReviewRouter from "./presentation/routes/lesson-review.route";
+import appointmentRouter from "./presentation/routes/health/appointment.route";
+import consultationRouter from "./presentation/routes/health/consultation.route";
 
 dotenv.config();
 const db = new PostgresDbConfig();
@@ -131,6 +133,9 @@ db.connection()
     app.use("/api/enrollments", enrollmentRouter);
     app.use("/api/quizes", quizRouter);
 
+    // health
+    app.use("/api/appointments", appointmentRouter);
+    app.use("/api/consultations", consultationRouter);
     // middleware interceptions
     app.use(notFoundHandler);
 
