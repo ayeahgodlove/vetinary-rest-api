@@ -10,6 +10,10 @@ export class QuizRequestDto {
   question: string;
 
   @IsNotEmpty()
+  @IsString()
+  lessonId: string;
+
+  @IsNotEmpty()
   @IsArray()
   answers: string[];
 
@@ -21,6 +25,7 @@ export class QuizRequestDto {
     this.question = data.question;
     this.answers = data.answers;
     this.correctAnswerIndex = data.correctAnswerIndex;
+    this.lessonId = data.lessonId;
   }
 
   toData(): IQuiz {
@@ -30,6 +35,7 @@ export class QuizRequestDto {
       question: this.question,
       answers: this.answers,
       correctAnswerIndex: this.correctAnswerIndex,
+      lessonId: this.lessonId,
     };
   }
 
@@ -39,6 +45,7 @@ export class QuizRequestDto {
       question: data.question,
       answers: data.answers,
       correctAnswerIndex: data.correctAnswerIndex,
+      lessonId: data.lessonId,
     };
   }
 }

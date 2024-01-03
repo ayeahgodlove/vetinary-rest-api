@@ -61,3 +61,5 @@ To effect generate migrations
 *****
 <!-- Validation -->
 ```npm install class-validator class-transformer```
+// add price and discount to course 
+convert long forms to step forms

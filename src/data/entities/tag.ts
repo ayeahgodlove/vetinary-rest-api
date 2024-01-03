@@ -1,7 +1,6 @@
 import { Table, Model, Column, DataType, BelongsToMany } from "sequelize-typescript";
 import { ITag } from "../../domain/models/tag";
 import { Product } from "./product";
-import { ProductTag } from "./product-tag";
 import { Post } from "./post";
 import { PostTag } from "./post-tag";
 import { DocumentFile } from "./document";
@@ -26,9 +25,6 @@ export class Tag extends Model<ITag> {
     unique: true,
   })
   name!: string;
-
-  @BelongsToMany(() => Product, () => ProductTag)
-  products!: Product[];
 
   @BelongsToMany(() => Post, () => PostTag)
   posts!: Post[];

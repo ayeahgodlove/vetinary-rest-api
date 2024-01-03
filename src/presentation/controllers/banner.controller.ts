@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { IBanner, IBannerResponse, emptyBanner } from "../../domain/models/banner";
+import {
+  IBanner,
+  IBannerResponse,
+  emptyBanner,
+} from "../../domain/models/banner";
 import { BannerUseCase } from "../../domain/usecases/banner.usecase";
 import { BannerRepository } from "../../data/repositories/impl/banner.repository";
 import { BannerMapper } from "../mappers/mapper";
@@ -8,6 +12,9 @@ import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
 import { User } from "../../data/entities/user";
+import rimraf from "rimraf";
+import path from "path";
+// import cloudinaryV2 from "../../infrastructure/cloudinary/config";
 
 const bannerRepository = new BannerRepository();
 const bannerUseCase = new BannerUseCase(bannerRepository);
@@ -24,6 +31,10 @@ export class BannersController {
     const user = req.user as User;
     const { filename } = req.file as Express.Multer.File;
 
+    if (!req.file) {
+      throw Error("No file uploaded");
+    }
+
     if (filename === undefined) {
       throw new Error("Photo not found!");
     }
@@ -37,10 +48,19 @@ export class BannersController {
       });
     } else {
       try {
+        // const result = await cloudinaryV2.uploader.upload(
+        //   `${req.file.path}`,
+        //   {
+        //     folder: "banners", // Optional: Set a folder in Cloudinary
+        //     resource_type: "image", // Automatically determine the file type
+        //   }
+        // );
+
         const bannerResponse = await bannerUseCase.createBanner({
           ...dto.toData(),
           userId: user.id,
           image: filename.toString(),
+          // image: result.secure_url,
         });
 
         res.status(201).json({
@@ -50,8 +70,13 @@ export class BannersController {
           success: true,
         });
       } catch (error: any) {
+        // const publicId = req.file.buffer.toString("base64");
+        // const deleteErr = await cloudinaryV2.uploader.destroy(publicId); // Delete the uploaded file
+        rimraf.sync(req.file.path);
+
         res.status(400).json({
           data: null,
+          // message: error.message + " " + deleteErr.message,
           message: error.message,
           validationErrors: [],
           success: false,
@@ -158,7 +183,12 @@ export class BannersController {
   ): Promise<void> {
     try {
       const id = req.params.id;
-
+      const banner = await bannerUseCase.getBannerById(id);
+      if (banner) {
+        const baseDirectory = "./public/uploads/banners";
+        const filePath = path.join(baseDirectory, banner.dataValues.image);
+        rimraf.sync(filePath);
+      }
       await bannerUseCase.deleteBanner(id);
 
       res.status(204).json({

@@ -36,6 +36,11 @@ export class Order extends Model<IOrder> {
   totalQtty!: number;
 
   @Column({
+    type: DataType.INTEGER,
+  })
+  discount!: number;
+
+  @Column({
     type: DataType.DECIMAL,
     allowNull: false,
   })

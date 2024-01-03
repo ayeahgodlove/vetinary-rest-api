@@ -15,7 +15,6 @@ import { ProductReview } from "../../../data/entities/product-review";
 import { UserDoc } from "../../../data/entities/user-doc";
 import { Branch } from "../../../data/entities/branch";
 import { Store } from "../../../data/entities/store";
-import { ProductImage } from "../../../data/entities/product-image";
 import { Product } from "../../../data/entities/product";
 import { UserRole } from "../../../data/entities/user-role";
 import { Tag } from "../../../data/entities/tag";
@@ -26,7 +25,6 @@ import { PostTag } from "../../../data/entities/post-tag";
 import { DocumentTag } from "../../../data/entities/document-tag";
 import { Banner } from "../../../data/entities/banner";
 import { SubCategory } from "../../../data/entities/sub-category";
-import { ProductTag } from "../../../data/entities/product-tag";
 import { UserStore } from "../../../data/entities/user-store";
 import { Order } from "../../../data/entities/order";
 import { Payment } from "../../../data/entities/payment";
@@ -69,8 +67,6 @@ export class PostgresDbConfig {
         Branch,
         Store,
         Product,
-        ProductImage,
-        ProductTag,
         UserStore,
         ProductReview,
         Banner,

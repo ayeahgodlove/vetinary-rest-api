@@ -1,5 +1,4 @@
 import { Product } from "../../data/entities/product";
-import { ProductImage } from "../../data/entities/product-image";
 import { Tag } from "../../data/entities/tag";
 import { IProductRepository } from "../../data/repositories/contracts/repository.base";
 import { IProduct } from "../models/product";
@@ -30,14 +29,6 @@ export class ProductUseCase {
 
   async getProductById(id: string): Promise<Product | null> {
     return this.productRepository.findById(id);
-  }
-
-  async getTagsForProduct(productId: string): Promise<Tag[]> {
-    return this.productRepository.getTagsForProduct(productId);
-  }
-
-  async getImagesForProduct(productId: string): Promise<ProductImage[]> {
-    return this.productRepository.getImagesForProduct(productId);
   }
 
   async getProductsByCategory(category: string): Promise<Product[]> {

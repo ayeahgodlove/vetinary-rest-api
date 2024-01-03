@@ -19,8 +19,6 @@ import { Store } from "../../data/entities/store";
 import { Product } from "../../data/entities/product";
 import { Comment } from "../../data/entities/comment";
 import { IProduct } from "../../domain/models/product";
-import { ProductImage } from "../../data/entities/product-image";
-import { IProductImage } from "../../domain/models/product-image";
 import { DocumentFile } from "../../data/entities/document";
 import { IDocument } from "../../domain/models/document";
 import { IComment } from "../../domain/models/comment";
@@ -30,8 +28,6 @@ import { SubCategory } from "../../data/entities/sub-category";
 import { ISubCategory } from "../../domain/models/sub-category";
 import { Banner } from "../../data/entities/banner";
 import { IBanner } from "../../domain/models/banner";
-import { ProductTag } from "../../data/entities/product-tag";
-import { IProductTag } from "../../domain/models/product-tag";
 import { Order } from "../../data/entities/order";
 import { IOrder } from "../../domain/models/order";
 import { Payment } from "../../data/entities/payment";
@@ -206,33 +202,7 @@ export class ProductMapper {
     return _products;
   }
 }
-export class ProductTagMapper {
-  toDTO(productTag: ProductTag): IProductTag {
-    const entity = productTag.toJSON<IProductTag>();
-    return entity;
-  }
-  toDTOs(productTags: ProductTag[]): IProductTag[] {
-    const _productTags = productTags.map((productTag) => {
-      const entity = productTag.toJSON<IProductTag>();
-      return entity;
-    });
-    return _productTags;
-  }
-}
 
-export class ProductImageMapper {
-  toDTO(productImage: ProductImage): IProductImage {
-    const entity = productImage.toJSON<IProductImage>();
-    return entity;
-  }
-  toDTOs(productImages: ProductImage[]): IProductImage[] {
-    const _productImages = productImages.map((productImage) => {
-      const entity = productImage.toJSON<IProductImage>();
-      return entity;
-    });
-    return _productImages;
-  }
-}
 export class UserDocMapper {
   toDTO(userDoc: UserDoc): IUserDoc {
     const entity = userDoc.toJSON<IUserDoc>();

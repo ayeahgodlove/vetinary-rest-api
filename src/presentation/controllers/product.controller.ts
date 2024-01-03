@@ -6,34 +6,19 @@ import {
 } from "../../domain/models/product";
 import { ProductUseCase } from "../../domain/usecases/product.usecase";
 import { ProductRepository } from "../../data/repositories/impl/product.repository";
-import {
-  ProductImageMapper,
-  ProductMapper,
-  TagMapper,
-} from "../mappers/mapper";
+import { ProductMapper } from "../mappers/mapper";
 import { ProductRequestDto } from "../dtos/product-request.dto";
 import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
-import { ProductImageRepository } from "../../data/repositories/impl/product-image.repository";
-import { ProductImageUseCase } from "../../domain/usecases/product-image.usecase";
-import { IProductImage } from "../../domain/models/product-image";
-import { nanoid } from "nanoid";
-import { ProductTag } from "../../data/entities/product-tag";
-import { ITag } from "../../domain/models/tag";
-import { IProductTag } from "../../domain/models/product-tag";
+import path from "path";
+import rimraf from "rimraf";
 
 const productRepository = new ProductRepository();
 const productUseCase = new ProductUseCase(productRepository);
 const productMapper = new ProductMapper();
 
-// product images
-const productImageRepository = new ProductImageRepository();
-const productImageUseCase = new ProductImageUseCase(productImageRepository);
-const productImageMapper = new ProductImageMapper();
-
 //product tags
-const tagMapper = new TagMapper();
 
 export class ProductsController {
   async createProduct(
@@ -42,12 +27,17 @@ export class ProductsController {
   ): Promise<void> {
     const dto = new ProductRequestDto(req.body);
     const validationErrors = await validate(dto);
-    const { productImages } = req.files as any;
+    const tags = JSON.parse(req.body.tags);
 
     if (!req.files) {
       throw new Error("Please select Images!");
     }
 
+    const { productImages } = req.files as any;
+    const productImagesStrArr: string[] = productImages.map(
+      (p: Express.Multer.File) => p.filename
+    );
+    
     if (validationErrors.length > 0) {
       res.status(400).json({
         validationErrors: displayValidationErrors(validationErrors) as any,
@@ -57,45 +47,15 @@ export class ProductsController {
       });
     } else {
       try {
-        const productResponse = await productUseCase.createProduct(
-          dto.toData()
-        );
-
-        const arrObj: IProductImage[] = productImages.map((image: any) => {
-          return {
-            id: nanoid(10),
-            imageUrl: image.filename,
-            productId: `${productResponse.id}`,
-            productName: dto.toData().name,
-          };
+        const productResponse = await productUseCase.createProduct({
+          ...dto.toData(),
+          tags,
+          productImages: productImagesStrArr,
         });
-        const productImageResponse =
-          await productImageUseCase.createProductImages(arrObj);
-        const productImageDatas =
-          productImageMapper.toDTOs(productImageResponse);
-
-        // add tags to product-tags
-        const tags = JSON.parse(req.body.tags);
-
-        const arry: IProductTag[] = tags.map(async (tag: string) => {
-          return {
-            tagId: tag,
-            productId: `${productResponse.id}`,
-          };
-        });
-
-        await ProductTag.bulkCreate([...arry], {
-          include: ["product"],
-        });
-
-        const tagRes = await productResponse.$get("tags");
-        const tagDtos = tagMapper.toDTOs(tagRes);
 
         const obj: IProduct = {
           ...productResponse.toJSON<IProduct>(),
-          productImages: productImageDatas,
           reviews: [],
-          tags: tagDtos,
         };
 
         res.status(201).json({
@@ -105,6 +65,12 @@ export class ProductsController {
           success: true,
         });
       } catch (error: any) {
+        const baseDirectory = "./public/uploads/products";
+        productImagesStrArr.forEach((filePath: string) => {
+          const fullPath = path.join(baseDirectory, filePath);
+          rimraf.sync(fullPath); // Delete each file using rimraf
+        });
+
         res.status(400).json({
           data: null,
           message: error.message,
@@ -119,17 +85,6 @@ export class ProductsController {
     try {
       const products = await productUseCase.getAll();
       const productsDTO = productMapper.toDTOs(products);
-
-      // const obj = await Promise.all(productsDTO.map(async (product) => {
-      //   const tags = await productUseCase.getTagsForProduct(product.id);
-      //   const productImages = await productUseCase.getImagesForProduct(product.id);
-
-      //   return {
-      //     ...product,
-      //     tags: tagMapper.toDTOs(tags),
-      //     productImages: productImageMapper.toDTOs(productImages)
-      //   };
-      // }))
 
       res.json({
         data: productsDTO,
@@ -272,6 +227,15 @@ export class ProductsController {
     try {
       const id = req.params.id;
 
+      const product = await productUseCase.getProductById(id);
+      if (product) {
+        const baseDirectory = "./public/uploads/products";
+
+        product.dataValues.productImages.forEach((filePath: string) => {
+          const fullPath = path.join(baseDirectory, filePath);
+          rimraf.sync(fullPath); // Delete each file using rimraf
+        });
+      }
       await productUseCase.deleteProduct(id);
 
       res.status(204).json({

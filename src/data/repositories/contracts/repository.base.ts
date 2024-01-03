@@ -8,8 +8,6 @@ import { Banner } from "../../entities/banner";
 import { IBanner } from "../../../domain/models/banner";
 import { IProduct } from "../../../domain/models/product";
 import { Product } from "../../entities/product";
-import { IProductImage } from "../../../domain/models/product-image";
-import { ProductImage } from "../../entities/product-image";
 import { Tag } from "../../entities/tag";
 import { IOrder } from "../../../domain/models/order";
 import { Order } from "../../entities/order";
@@ -39,8 +37,6 @@ export interface IDocumentRepository
 export interface IProductRepository extends IRepository<IProduct, Product> {
   search(value: string): Promise<Product[]>;
   findByCategory(category: string): Promise<Product[]>;
-  getTagsForProduct(productId: string): Promise<Tag[]>;
-  getImagesForProduct(productId: string): Promise<ProductImage[]>;
 }
 export interface IPostRepository extends IRepository<IPost, Post> {
   findByTitle(title: string): Promise<Post | null>;
@@ -48,12 +44,6 @@ export interface IPostRepository extends IRepository<IPost, Post> {
 export interface IBannerRepository extends IRepository<IBanner, Banner> {
   findByTitle(title: string): Promise<Banner | null>;
 }
-
-export interface IProductImageRepository
-  extends IRepository<IProductImage, ProductImage> {
-  createMany(productImages: IProductImage[]): Promise<ProductImage[]>;
-}
-
 
 export interface IOrderRepository extends IRepository<IOrder, Order> {
   findByOrderNo(orderNo: string): Promise<Order | null>;

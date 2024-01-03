@@ -12,6 +12,8 @@ import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
 import { User } from "../../data/entities/user";
+import path from "path";
+import rimraf from "rimraf";
 
 const documentRepository = new DocumentRepository();
 const documentUseCase = new DocumentUseCase(documentRepository);
@@ -162,6 +164,12 @@ export class DocumentsController {
     try {
       const id = req.params.id;
 
+      const document = await documentUseCase.getDocumentById(id);
+      if (document) {
+        const baseDirectory = "./public/uploads/documents";
+        const filePath = path.join(baseDirectory, document.dataValues.fileUrl);
+        rimraf.sync(filePath);
+      }
       await documentUseCase.deleteDocument(id);
 
       res.status(204).json({

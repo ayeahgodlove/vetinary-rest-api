@@ -9,12 +9,9 @@ import {
   BelongsToMany,
 } from "sequelize-typescript";
 import { IProduct } from "../../domain/models/product";
-import { ProductImage } from "./product-image";
 import { Store } from "./store";
 import { Category } from "./category";
 import { ProductReview } from "./product-review";
-import { Tag } from "./tag";
-import { ProductTag } from "./product-tag";
 import { Order } from "./order";
 import { ProductOrder } from "./product-order";
 
@@ -81,15 +78,23 @@ export class Product extends Model<IProduct> {
   })
   qtty!: number;
 
+  @Column({
+    type: DataType.ARRAY(DataType.STRING),
+    allowNull: false,
+  })
+  productImages!: string[];
+
+  @Column({
+    type: DataType.ARRAY(DataType.STRING),
+    allowNull: false,
+  })
+  tags!: string[];
+
+
   @HasMany(() => ProductReview)
   productReviews!: ProductReview[];
 
-  @BelongsToMany(() => Tag, () => ProductTag)
-  tags!: Tag[];
-
   // relationships
-  @HasMany(() => ProductImage)
-  productImages!: ProductImage[];
 
   @BelongsTo(() => Store, "storeId")
   store!: Store;

@@ -2,10 +2,7 @@ import { Product } from "../../entities/product";
 import { IProduct } from "../../../domain/models/product";
 import { NotFoundException } from "../../../shared/exceptions/not-found.exception";
 import { IRepository } from "../contracts/repository.base";
-import { Sequelize } from "sequelize-typescript";
-import { Op, QueryInterface } from "sequelize";
-import { ProductImage } from "../../entities/product-image";
-import { Tag } from "../../entities/tag";
+import { Op } from "sequelize";
 
 export class ProductRepository implements IRepository<IProduct, Product> {
   /**
@@ -80,31 +77,11 @@ export class ProductRepository implements IRepository<IProduct, Product> {
    */
   async getAll(): Promise<Product[]> {
     try {
-      const products = await Product.findAll({ include: [Tag, ProductImage]});
+      const products = await Product.findAll();
       return products;
     } catch (error) {
       throw error;
     }
-  }
-
-  async getImagesForProduct(productId: string): Promise<ProductImage[]> {
-    const product = await Product.findByPk(productId, {
-      include: [ProductImage],
-    });
-    if (!product) {
-      throw new NotFoundException("Product", productId);
-    }
-    return product.productImages;
-  }
-
-  async getTagsForProduct(productId: string): Promise<Tag[]> {
-    const product = await Product.findByPk(productId, {
-      include: [Tag],
-    });
-    if (!product) {
-      throw new NotFoundException("Product", productId);
-    }
-    return product.tags;
   }
   /**
    * Receives a Product as parameter

@@ -1,5 +1,5 @@
 
-import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 import { IProduct, emptyProduct } from "../../domain/models/product";
 import { nanoid } from "nanoid";
 
@@ -33,6 +33,11 @@ export class ProductRequestDto {
   @IsString()
   storeId: string
 
+  // @IsNotEmpty()
+  // @IsArray()
+  // productImages: string[];
+
+
   constructor(data: IProduct) {
     this.name = data.name;
     this.description = data.description;
@@ -40,7 +45,7 @@ export class ProductRequestDto {
     this.amount = data.amount;
     this.qtty = data.qtty;
     this.categoryId = data.categoryId;
-    this.storeId = data.storeId
+    this.storeId = data.storeId;
   }
 
   toData(): IProduct {
@@ -70,7 +75,7 @@ export class ProductRequestDto {
       productImages: data.productImages,
       reviews: data.reviews,
       tags: data.tags,
-      orders: data.orders
+      orders: data.orders,
     };
   }
 }

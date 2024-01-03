@@ -13,6 +13,7 @@ export interface IOrder {
   cellPhone:string;
   address: string;
   products: IProduct[]
+  discount?: number;
 } 
 
 export const emptyOrder: IOrder = {

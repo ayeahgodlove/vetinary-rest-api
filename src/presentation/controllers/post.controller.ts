@@ -8,6 +8,8 @@ import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
 import { User } from "../../data/entities/user";
+import path from "path";
+import rimraf from "rimraf";
 
 const postRepository = new PostRepository();
 const postUseCase = new PostUseCase(postRepository);
@@ -149,6 +151,12 @@ export class PostsController {
     try {
       const id = req.params.id;
 
+      const post = await postUseCase.getPostById(id);
+      if (post) {
+        const baseDirectory = "./public/uploads/posts";
+        const filePath = path.join(baseDirectory, post.dataValues.imageUrl);
+        rimraf.sync(filePath);
+      }
       await postUseCase.deletePost(id);
 
       res.status(204).json({

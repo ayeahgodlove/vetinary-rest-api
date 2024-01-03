@@ -1,6 +1,6 @@
 // src/presentation/dtos/course-request.dto.ts
 
-import {  IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { nanoid } from "nanoid";
 import { ICourse, emptyCourse } from "../../../domain/models/lms/course";
 
@@ -17,10 +17,15 @@ export class CourseRequestDto {
   @IsString()
   authorId: string;
 
+  @IsNotEmpty()
+  @IsNumber()
+  price: number;
+
   constructor(data: ICourse) {
     this.title = data.title;
     this.description = data.description;
-    this.authorId = data.authorId
+    this.authorId = data.authorId;
+    this.price = data.price;
   }
 
   toData(): ICourse {
@@ -29,7 +34,8 @@ export class CourseRequestDto {
       id: nanoid(10),
       title: this.title,
       description: this.description,
-      authorId: this.authorId
+      authorId: this.authorId,
+      price: this.price,
     };
   }
 
@@ -39,7 +45,8 @@ export class CourseRequestDto {
       title: data.title,
       description: data.description,
       authorId: data.authorId,
-      courseImage: data.courseImage
-    }
+      courseImage: data.courseImage,
+      price: data.price,
+    };
   }
 }

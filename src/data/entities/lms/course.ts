@@ -39,6 +39,11 @@ export class Course extends Model<ICourse> {
   description!: string;
 
   @Column({
+    type: DataType.DECIMAL,
+  })
+  price!: number;
+
+  @Column({
     type: DataType.STRING(255),
     allowNull: false,
   })

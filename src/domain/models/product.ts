@@ -1,7 +1,6 @@
 import { IBaseResponse } from "./base-response";
 import { IOrder } from "./order";
-import { IProductImage } from "./product-image";
-import { IReview } from "./lesson-review";
+import { ILessonReview } from "./lesson-review";
 import { ITag } from "./tag";
 
 export interface IProduct {
@@ -12,10 +11,10 @@ export interface IProduct {
   categoryId: string;
   shortDescription: string;
   storeId: string;
-  productImages: IProductImage[];
+  productImages: string[];
   qtty: number;
-  reviews: IReview[]
-  tags: ITag[]
+  reviews: ILessonReview[]
+  tags: string[]
   orders: IOrder[]
 }
 
