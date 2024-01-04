@@ -7,6 +7,8 @@ export interface ICourse {
   courseImage: string;
   authorId: string
   price: number,
+  enrollmentDate: Date;
+  completionDate: Date;
 }
 
 export const emptyCourse: ICourse = {
@@ -15,7 +17,9 @@ export const emptyCourse: ICourse = {
   description: "",
   courseImage: "",
   authorId: "",
-  price: 0
+  price: 0,
+  enrollmentDate: new Date(),
+  completionDate: new Date()
 };
 
 export interface ICourseResponse extends IBaseResponse {

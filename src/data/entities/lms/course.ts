@@ -56,6 +56,18 @@ export class Course extends Model<ICourse> {
   })
   authorId!: string;
 
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  enrollmentDate!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  completionDate!: Date;
+
   @BelongsTo(() => User, "authorId")
   user!: User;
 
