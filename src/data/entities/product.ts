@@ -60,21 +60,18 @@ export class Product extends Model<IProduct> {
   @Column({
     type: DataType.TEXT,
     allowNull: false,
-    unique: true,
   })
   shortDescription!: string;
 
   @Column({
     type: DataType.TEXT,
     allowNull: false,
-    unique: true,
   })
   description!: string;
 
   @Column({
     type: DataType.DECIMAL,
     allowNull: false,
-    unique: true,
   })
   qtty!: number;
 

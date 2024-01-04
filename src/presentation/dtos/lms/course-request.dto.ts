@@ -18,7 +18,7 @@ export class CourseRequestDto {
   authorId: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  // @IsNumber()
   price: number;
 
   constructor(data: ICourse) {
@@ -35,7 +35,7 @@ export class CourseRequestDto {
       title: this.title,
       description: this.description,
       authorId: this.authorId,
-      price: this.price,
+      price: Number(this.price),
     };
   }
 
@@ -46,7 +46,7 @@ export class CourseRequestDto {
       description: data.description,
       authorId: data.authorId,
       courseImage: data.courseImage,
-      price: data.price,
+      price:  Number(data.price),
     };
   }
 }
