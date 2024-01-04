@@ -36,7 +36,7 @@ const initiateTransaction = async (
     {
       amount: `${body.amount}`,
       currency: "XAF",
-      from: `${body.telephone}`,
+      from: `237${body.telephone}`,
       description: "Pay for services",
       external_reference: "",
       external_user: "",

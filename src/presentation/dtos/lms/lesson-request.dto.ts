@@ -45,6 +45,10 @@ export class LessonRequestDto {
   @IsArray()
   keywords: string[];
 
+  @IsNotEmpty()
+  @IsString()
+  courseId: string;
+
   constructor(data: ILesson) {
     this.title = data.title;
     this.description = data.description;
@@ -56,6 +60,7 @@ export class LessonRequestDto {
     this.objectives = data.objectives;
     this.keywords = data.keywords;
     this.author = data.author;
+    this.courseId = data.courseId;
   }
 
   toData(): ILesson {
@@ -72,6 +77,7 @@ export class LessonRequestDto {
       objectives: this.objectives,
       keywords: this.keywords,
       author: this.author,
+      courseId: this.courseId
     };
   }
 

@@ -32,7 +32,6 @@ export class QuizesController {
       try {
         const quizResponse = await quizUseCase.createQuiz({
           ...dto.toData(),
-          lessonId: req.body.lessonId,
         });
 
         res.status(201).json({
