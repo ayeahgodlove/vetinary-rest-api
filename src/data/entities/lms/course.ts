@@ -10,6 +10,7 @@ import {
 import { ICourse } from "../../../domain/models/lms/course";
 import { User } from "../user";
 import { Lesson } from "./lesson";
+import { Enrollment } from "./enrollment";
 
 @Table({
   timestamps: true,
@@ -60,7 +61,7 @@ export class Course extends Model<ICourse> {
     type: DataType.DATE,
     allowNull: false,
   })
-  enrollmentDate!: Date;
+  startDate!: Date;
 
   @Column({
     type: DataType.DATE,
@@ -73,4 +74,7 @@ export class Course extends Model<ICourse> {
 
   @HasMany(() => Lesson)
   lessons!: Lesson[]; // One course has many lessons
+
+  @HasMany(() => Enrollment)
+  enrollments!: Enrollment[]; // One course has many lessons
 }

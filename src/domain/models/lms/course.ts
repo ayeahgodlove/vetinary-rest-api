@@ -7,7 +7,7 @@ export interface ICourse {
   courseImage: string;
   authorId: string
   price: number,
-  enrollmentDate: Date;
+  startDate: Date;
   completionDate: Date;
 }
 
@@ -18,7 +18,7 @@ export const emptyCourse: ICourse = {
   courseImage: "",
   authorId: "",
   price: 0,
-  enrollmentDate: new Date(),
+  startDate: new Date(),
   completionDate: new Date()
 };
 
