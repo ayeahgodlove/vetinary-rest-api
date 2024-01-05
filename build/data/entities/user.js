@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const role_1 = require("./role");
-const review_1 = require("./review");
 const user_doc_1 = require("./user-doc");
 const user_role_1 = require("./user-role");
 const store_1 = require("./store");
@@ -31,7 +30,6 @@ let User = class User extends sequelize_typescript_1.Model {
     password;
     // verification paramters
     verified;
-    reviews;
     userDoc;
     // Define the many-to-many association with Role
     roles;
@@ -131,10 +129,6 @@ __decorate([
     }),
     __metadata("design:type", Boolean)
 ], User.prototype, "verified", void 0);
-__decorate([
-    (0, sequelize_typescript_1.HasMany)(() => review_1.Review),
-    __metadata("design:type", Array)
-], User.prototype, "reviews", void 0);
 __decorate([
     (0, sequelize_typescript_1.HasOne)(() => user_doc_1.UserDoc),
     __metadata("design:type", user_doc_1.UserDoc)

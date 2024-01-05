@@ -24,12 +24,6 @@ class ProductUseCase {
     async getProductById(id) {
         return this.productRepository.findById(id);
     }
-    async getTagsForProduct(productId) {
-        return this.productRepository.getTagsForProduct(productId);
-    }
-    async getImagesForProduct(productId) {
-        return this.productRepository.getImagesForProduct(productId);
-    }
     async getProductsByCategory(category) {
         return this.productRepository.findByCategory(category);
     }

@@ -37,7 +37,6 @@ const error_middleware_1 = require("./shared/middlewares/error.middleware");
 const not_found_middleware_1 = require("./shared/middlewares/not-found.middleware");
 const category_route_1 = __importDefault(require("./presentation/routes/category.route"));
 const role_route_1 = __importDefault(require("./presentation/routes/role.route"));
-const review_route_1 = __importDefault(require("./presentation/routes/review.route"));
 const auth_route_1 = require("./presentation/routes/auth/auth.route");
 const user_route_1 = __importDefault(require("./presentation/routes/user.route"));
 const user_doc_route_1 = __importDefault(require("./presentation/routes/user-doc.route"));
@@ -55,6 +54,14 @@ const banner_route_1 = __importDefault(require("./presentation/routes/banner.rou
 const order_route_1 = __importDefault(require("./presentation/routes/order.route"));
 const payment_route_1 = __importDefault(require("./presentation/routes/payment.route"));
 const process_payments_route_1 = __importDefault(require("./presentation/routes/payment/process-payments.route"));
+const course_route_1 = __importDefault(require("./presentation/routes/lms/course.route"));
+const lesson_route_1 = __importDefault(require("./presentation/routes/lms/lesson.route"));
+const enrollment_route_1 = __importDefault(require("./presentation/routes/lms/enrollment.route"));
+const quiz_route_1 = __importDefault(require("./presentation/routes/lms/quiz.route"));
+const product_review_route_1 = __importDefault(require("./presentation/routes/product-review.route"));
+const lesson_review_route_1 = __importDefault(require("./presentation/routes/lesson-review.route"));
+const appointment_route_1 = __importDefault(require("./presentation/routes/health/appointment.route"));
+const consultation_route_1 = __importDefault(require("./presentation/routes/health/consultation.route"));
 dotenv.config();
 const db = new db_postgres_config_1.PostgresDbConfig();
 /**
@@ -115,7 +122,8 @@ db.connection()
     app.use("/api/posts", post_route_1.default);
     app.use("/api/roles", role_route_1.default);
     app.use("/api/user-documents", user_doc_route_1.default);
-    app.use("/api/reviews", review_route_1.default);
+    app.use("/api/product-reviews", product_review_route_1.default);
+    app.use("/api/lesson-reviews", lesson_review_route_1.default);
     app.use("/api/users", user_route_1.default);
     app.use("/api/products", product_route_1.default);
     app.use("/api/stores", store_route_1.default);
@@ -125,6 +133,14 @@ db.connection()
     app.use("/api/payments", payment_route_1.default);
     //only for test purposes
     app.use("/api/process-payments", process_payments_route_1.default);
+    //course module
+    app.use("/api/courses", course_route_1.default);
+    app.use("/api/lessons", lesson_route_1.default);
+    app.use("/api/enrollments", enrollment_route_1.default);
+    app.use("/api/quizes", quiz_route_1.default);
+    // health
+    app.use("/api/appointments", appointment_route_1.default);
+    app.use("/api/consultations", consultation_route_1.default);
     // middleware interceptions
     app.use(not_found_middleware_1.notFoundHandler);
     /**

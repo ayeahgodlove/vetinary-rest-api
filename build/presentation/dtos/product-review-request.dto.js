@@ -1,5 +1,5 @@
 "use strict";
-// src/presentation/dtos/review-request.dto.ts
+// src/presentation/dtos/productReview-request.dto.ts
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,11 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReviewRequestDto = void 0;
+exports.ProductReviewRequestDto = void 0;
 const class_validator_1 = require("class-validator");
-const review_1 = require("../../domain/models/review");
+const product_review_1 = require("../../domain/models/product-review");
 const nanoid_1 = require("nanoid");
-class ReviewRequestDto {
+class ProductReviewRequestDto {
     userId;
     rating;
     comment;
@@ -25,7 +25,7 @@ class ReviewRequestDto {
     }
     toData() {
         return {
-            ...review_1.emptyReview,
+            ...product_review_1.emptyProductReview,
             id: (0, nanoid_1.nanoid)(10),
             comment: this.comment,
             rating: this.rating,
@@ -47,15 +47,15 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], ReviewRequestDto.prototype, "userId", void 0);
+], ProductReviewRequestDto.prototype, "userId", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
-], ReviewRequestDto.prototype, "rating", void 0);
+], ProductReviewRequestDto.prototype, "rating", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], ReviewRequestDto.prototype, "comment", void 0);
-exports.ReviewRequestDto = ReviewRequestDto;
+], ProductReviewRequestDto.prototype, "comment", void 0);
+exports.ProductReviewRequestDto = ProductReviewRequestDto;

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Quiz = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
+const lesson_1 = require("./lesson");
 // id: string;
 // question: string;
 // answers: string[];
@@ -19,6 +20,8 @@ let Quiz = class Quiz extends sequelize_typescript_1.Model {
     question;
     answers;
     correctAnswerIndex;
+    lessonId;
+    lesson; // Each lesson belongs to a single cou
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -50,6 +53,23 @@ __decorate([
     }),
     __metadata("design:type", Number)
 ], Quiz.prototype, "correctAnswerIndex", void 0);
+__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => lesson_1.Lesson) // foreign key
+    ,
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING(128),
+        allowNull: false,
+        references: {
+            model: lesson_1.Lesson,
+            key: "id",
+        },
+    }),
+    __metadata("design:type", String)
+], Quiz.prototype, "lessonId", void 0);
+__decorate([
+    (0, sequelize_typescript_1.BelongsTo)(() => lesson_1.Lesson, "lessonId"),
+    __metadata("design:type", lesson_1.Lesson)
+], Quiz.prototype, "lesson", void 0);
 Quiz = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

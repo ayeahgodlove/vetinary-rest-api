@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsController = void 0;
 const document_1 = require("../../domain/models/document");
@@ -9,6 +12,8 @@ const document_request_dto_1 = require("../dtos/document-request.dto");
 const class_validator_1 = require("class-validator");
 const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
 const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
+const path_1 = __importDefault(require("path"));
+const rimraf_1 = __importDefault(require("rimraf"));
 const documentRepository = new document_repository_1.DocumentRepository();
 const documentUseCase = new document_usecase_1.DocumentUseCase(documentRepository);
 const documentMapper = new mapper_1.DocumentMapper();
@@ -139,6 +144,12 @@ class DocumentsController {
     async deleteDocument(req, res) {
         try {
             const id = req.params.id;
+            const document = await documentUseCase.getDocumentById(id);
+            if (document) {
+                const baseDirectory = "./public/uploads/documents";
+                const filePath = path_1.default.join(baseDirectory, document.dataValues.fileUrl);
+                rimraf_1.default.sync(filePath);
+            }
             await documentUseCase.deleteDocument(id);
             res.status(204).json({
                 message: `Operation successfully completed!`,

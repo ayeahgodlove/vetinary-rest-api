@@ -12,4 +12,6 @@ exports.emptyLesson = {
     prerequisites: [],
     objectives: [],
     keywords: [],
+    author: "",
+    courseId: ""
 };

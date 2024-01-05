@@ -6,4 +6,5 @@ exports.emptyQuiz = {
     question: "",
     answers: [""],
     correctAnswerIndex: 0,
+    lessonId: ""
 };

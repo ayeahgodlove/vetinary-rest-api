@@ -23,6 +23,9 @@ class ProductRequestDto {
     qtty;
     categoryId;
     storeId;
+    // @IsNotEmpty()
+    // @IsArray()
+    // productImages: string[];
     constructor(data) {
         this.name = data.name;
         this.description = data.description;
@@ -51,14 +54,14 @@ class ProductRequestDto {
             name: data.name,
             description: data.description,
             shortDescription: data.shortDescription,
-            amount: data.amount,
-            qtty: data.qtty,
+            amount: Number(data.amount),
+            qtty: Number(data.qtty),
             categoryId: data.categoryId,
             storeId: data.storeId,
             productImages: data.productImages,
             reviews: data.reviews,
             tags: data.tags,
-            orders: data.orders
+            orders: data.orders,
         };
     }
 }

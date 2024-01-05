@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.emptyReview = void 0;
-exports.emptyReview = {
+exports.emptyLessonReview = void 0;
+exports.emptyLessonReview = {
     id: "",
     userId: "",
     rating: 0,

@@ -22,7 +22,7 @@ const initiateTransaction = async (body) => {
     const response = await axios_1.default.post("https://demo.campay.net/api/collect/", {
         amount: `${body.amount}`,
         currency: "XAF",
-        from: `${body.telephone}`,
+        from: `237${body.telephone}`,
         description: "Pay for services",
         external_reference: "",
         external_user: "",

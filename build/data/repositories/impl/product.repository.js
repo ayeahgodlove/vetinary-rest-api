@@ -4,8 +4,6 @@ exports.ProductRepository = void 0;
 const product_1 = require("../../entities/product");
 const not_found_exception_1 = require("../../../shared/exceptions/not-found.exception");
 const sequelize_1 = require("sequelize");
-const product_image_1 = require("../../entities/product-image");
-const tag_1 = require("../../entities/tag");
 class ProductRepository {
     /**
      *
@@ -76,30 +74,12 @@ class ProductRepository {
      */
     async getAll() {
         try {
-            const products = await product_1.Product.findAll({ include: [tag_1.Tag, product_image_1.ProductImage] });
+            const products = await product_1.Product.findAll();
             return products;
         }
         catch (error) {
             throw error;
         }
-    }
-    async getImagesForProduct(productId) {
-        const product = await product_1.Product.findByPk(productId, {
-            include: [product_image_1.ProductImage],
-        });
-        if (!product) {
-            throw new not_found_exception_1.NotFoundException("Product", productId);
-        }
-        return product.productImages;
-    }
-    async getTagsForProduct(productId) {
-        const product = await product_1.Product.findByPk(productId, {
-            include: [tag_1.Tag],
-        });
-        if (!product) {
-            throw new not_found_exception_1.NotFoundException("Product", productId);
-        }
-        return product.tags;
     }
     /**
      * Receives a Product as parameter

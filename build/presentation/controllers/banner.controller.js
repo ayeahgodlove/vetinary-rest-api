@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BannersController = void 0;
 const banner_1 = require("../../domain/models/banner");
@@ -9,6 +12,9 @@ const banner_request_dto_1 = require("../dtos/banner-request.dto");
 const class_validator_1 = require("class-validator");
 const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
 const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
+const rimraf_1 = __importDefault(require("rimraf"));
+const path_1 = __importDefault(require("path"));
+// import cloudinaryV2 from "../../infrastructure/cloudinary/config";
 const bannerRepository = new banner_repository_1.BannerRepository();
 const bannerUseCase = new banner_usecase_1.BannerUseCase(bannerRepository);
 const bannerMapper = new mapper_1.BannerMapper();
@@ -18,6 +24,9 @@ class BannersController {
         const validationErrors = await (0, class_validator_1.validate)(dto);
         const user = req.user;
         const { filename } = req.file;
+        if (!req.file) {
+            throw Error("No file uploaded");
+        }
         if (filename === undefined) {
             throw new Error("Photo not found!");
         }
@@ -31,10 +40,18 @@ class BannersController {
         }
         else {
             try {
+                // const result = await cloudinaryV2.uploader.upload(
+                //   `${req.file.path}`,
+                //   {
+                //     folder: "banners", // Optional: Set a folder in Cloudinary
+                //     resource_type: "image", // Automatically determine the file type
+                //   }
+                // );
                 const bannerResponse = await bannerUseCase.createBanner({
                     ...dto.toData(),
                     userId: user.id,
                     image: filename.toString(),
+                    // image: result.secure_url,
                 });
                 res.status(201).json({
                     data: bannerResponse.toJSON(),
@@ -44,8 +61,12 @@ class BannersController {
                 });
             }
             catch (error) {
+                // const publicId = req.file.buffer.toString("base64");
+                // const deleteErr = await cloudinaryV2.uploader.destroy(publicId); // Delete the uploaded file
+                rimraf_1.default.sync(req.file.path);
                 res.status(400).json({
                     data: null,
+                    // message: error.message + " " + deleteErr.message,
                     message: error.message,
                     validationErrors: [],
                     success: false,
@@ -138,6 +159,12 @@ class BannersController {
     async deleteBanner(req, res) {
         try {
             const id = req.params.id;
+            const banner = await bannerUseCase.getBannerById(id);
+            if (banner) {
+                const baseDirectory = "./public/uploads/banners";
+                const filePath = path_1.default.join(baseDirectory, banner.dataValues.image);
+                rimraf_1.default.sync(filePath);
+            }
             await bannerUseCase.deleteBanner(id);
             res.status(204).json({
                 message: `Operation successfully completed!`,

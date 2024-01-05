@@ -11,12 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Product = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-const product_image_1 = require("./product-image");
 const store_1 = require("./store");
 const category_1 = require("./category");
-const review_1 = require("./review");
-const tag_1 = require("./tag");
-const product_tag_1 = require("./product-tag");
+const product_review_1 = require("./product-review");
 const order_1 = require("./order");
 const product_order_1 = require("./product-order");
 let Product = class Product extends sequelize_typescript_1.Model {
@@ -27,10 +24,10 @@ let Product = class Product extends sequelize_typescript_1.Model {
     shortDescription;
     description;
     qtty;
-    reviews;
-    tags;
-    // relationships
     productImages;
+    tags;
+    productReviews;
+    // relationships
     store;
     // one-to-one relationships
     category;
@@ -82,7 +79,6 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.TEXT,
         allowNull: false,
-        unique: true,
     }),
     __metadata("design:type", String)
 ], Product.prototype, "shortDescription", void 0);
@@ -90,7 +86,6 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.TEXT,
         allowNull: false,
-        unique: true,
     }),
     __metadata("design:type", String)
 ], Product.prototype, "description", void 0);
@@ -98,22 +93,27 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.DECIMAL,
         allowNull: false,
-        unique: true,
     }),
     __metadata("design:type", Number)
 ], Product.prototype, "qtty", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => review_1.Review),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.ARRAY(sequelize_typescript_1.DataType.STRING),
+        allowNull: false,
+    }),
     __metadata("design:type", Array)
-], Product.prototype, "reviews", void 0);
+], Product.prototype, "productImages", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsToMany)(() => tag_1.Tag, () => product_tag_1.ProductTag),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.ARRAY(sequelize_typescript_1.DataType.STRING),
+        allowNull: false,
+    }),
     __metadata("design:type", Array)
 ], Product.prototype, "tags", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => product_image_1.ProductImage),
+    (0, sequelize_typescript_1.HasMany)(() => product_review_1.ProductReview),
     __metadata("design:type", Array)
-], Product.prototype, "productImages", void 0);
+], Product.prototype, "productReviews", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => store_1.Store, "storeId"),
     __metadata("design:type", store_1.Store)

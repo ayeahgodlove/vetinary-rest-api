@@ -42,6 +42,8 @@ export class CoursesController {
         const courseResponse = await courseUseCase.createCourse({
           ...dto.toData(),
           courseImage: filename.toString(),
+          completionDate: req.body.completionDate,
+          startDate: req.body.startDate
         });
 
         res.status(201).json({

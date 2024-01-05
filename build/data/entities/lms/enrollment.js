@@ -47,7 +47,7 @@ __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => user_1.User) // foreign key
     ,
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(128),
+        type: sequelize_typescript_1.DataType.STRING(20),
         allowNull: false,
     }),
     __metadata("design:type", String)

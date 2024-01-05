@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostsController = void 0;
 const post_1 = require("../../domain/models/post");
@@ -9,6 +12,8 @@ const post_request_dto_1 = require("../dtos/post-request.dto");
 const class_validator_1 = require("class-validator");
 const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
 const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
+const path_1 = __importDefault(require("path"));
+const rimraf_1 = __importDefault(require("rimraf"));
 const postRepository = new post_repository_1.PostRepository();
 const postUseCase = new post_usecase_1.PostUseCase(postRepository);
 const postMapper = new mapper_1.PostMapper();
@@ -142,6 +147,12 @@ class PostsController {
     async deletePost(req, res) {
         try {
             const id = req.params.id;
+            const post = await postUseCase.getPostById(id);
+            if (post) {
+                const baseDirectory = "./public/uploads/posts";
+                const filePath = path_1.default.join(baseDirectory, post.dataValues.imageUrl);
+                rimraf_1.default.sync(filePath);
+            }
             await postUseCase.deletePost(id);
             res.status(204).json({
                 message: `Operation successfully completed!`,

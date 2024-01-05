@@ -1,20 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReviewsController = void 0;
-const review_1 = require("../../domain/models/review");
-const review_usecase_1 = require("../../domain/usecases/review.usecase");
-const review_repository_1 = require("../../data/repositories/impl/review.repository");
-const mapper_1 = require("../mappers/mapper");
-const review_request_dto_1 = require("../dtos/review-request.dto");
+exports.LessonsController = void 0;
+const lesson_repository_1 = require("../../../data/repositories/impl/lms/lesson.repository");
+const lesson_usecase_1 = require("../../../domain/usecases/lms/lesson.usecase");
+const mapper_1 = require("../../mappers/mapper");
+const lesson_request_dto_1 = require("../../dtos/lms/lesson-request.dto");
+const displayValidationErrors_1 = require("../../../utils/displayValidationErrors");
 const class_validator_1 = require("class-validator");
-const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
-const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
-const reviewRepository = new review_repository_1.ReviewRepository();
-const reviewUseCase = new review_usecase_1.ReviewUseCase(reviewRepository);
-const reviewMapper = new mapper_1.ReviewMapper();
-class ReviewsController {
-    async createReview(req, res) {
-        const dto = new review_request_dto_1.ReviewRequestDto(req.body);
+const not_found_exception_1 = require("../../../shared/exceptions/not-found.exception");
+const lessonRepository = new lesson_repository_1.LessonRepository();
+const lessonUseCase = new lesson_usecase_1.LessonUseCase(lessonRepository);
+const lessonMapper = new mapper_1.LessonMapper();
+class LessonsController {
+    async createLesson(req, res) {
+        const dto = new lesson_request_dto_1.LessonRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
         if (validationErrors.length > 0) {
             res.status(400).json({
@@ -26,10 +25,16 @@ class ReviewsController {
         }
         else {
             try {
-                const reviewResponse = await reviewUseCase.createReview(dto.toData());
+                const lessonResponse = await lessonUseCase.createLesson({
+                    ...dto.toData(),
+                    category: req.body.category,
+                    language: req.body.language,
+                    targetAudience: req.body.targetAudience,
+                    rating: req.body.rating,
+                });
                 res.status(201).json({
-                    data: reviewResponse.toJSON(),
-                    message: "Review created Successfully!",
+                    data: lessonResponse.toJSON(),
+                    message: "Lesson created Successfully!",
                     validationErrors: [],
                     success: true,
                 });
@@ -46,10 +51,10 @@ class ReviewsController {
     }
     async getAll(req, res) {
         try {
-            const reviews = await reviewUseCase.getAll();
-            const reviewsDTO = reviewMapper.toDTOs(reviews);
+            const lessons = await lessonUseCase.getAll();
+            const lessonsDTO = lessonMapper.toDTOs(lessons);
             res.json({
-                data: reviewsDTO,
+                data: lessonsDTO,
                 message: "Success",
                 validationErrors: [],
                 success: true,
@@ -64,16 +69,16 @@ class ReviewsController {
             });
         }
     }
-    async getReviewById(req, res) {
+    async getLessonById(req, res) {
         try {
             const id = req.params.id;
-            const review = await reviewUseCase.getReviewById(id);
-            if (!review) {
-                throw new not_found_exception_1.NotFoundException("Review", id);
+            const lesson = await lessonUseCase.getLessonById(id);
+            if (!lesson) {
+                throw new not_found_exception_1.NotFoundException("Lesson", id);
             }
-            const reviewDTO = reviewMapper.toDTO(review);
+            const lessonDTO = lessonMapper.toDTO(lesson);
             res.json({
-                data: reviewDTO,
+                data: lessonDTO,
                 message: "Success",
                 validationErrors: [],
                 success: true,
@@ -88,8 +93,8 @@ class ReviewsController {
             });
         }
     }
-    async updateReview(req, res) {
-        const dto = new review_request_dto_1.ReviewRequestDto(req.body);
+    async updateLesson(req, res) {
+        const dto = new lesson_request_dto_1.LessonRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
         if (validationErrors.length > 0) {
             res.status(400).json({
@@ -103,15 +108,20 @@ class ReviewsController {
             try {
                 const id = req.params.id;
                 const obj = {
-                    ...review_1.emptyReview,
                     ...req.body,
                     id: id,
+                    category: req.body.category,
+                    language: req.body.language,
+                    targetAudience: req.body.targetAudience,
+                    rating: req.body.rating
                 };
-                const updatedReview = await reviewUseCase.updateReview(obj);
-                const reviewDto = reviewMapper.toDTO(updatedReview);
+                const updatedLesson = await lessonUseCase.updateLesson({
+                    ...dto.toUpdateData(obj),
+                });
+                const lessonDto = lessonMapper.toDTO(updatedLesson);
                 res.json({
-                    data: reviewDto,
-                    message: "Review Updated Successfully!",
+                    data: lessonDto,
+                    message: "Lesson Updated Successfully!",
                     validationErrors: [],
                     success: true,
                 });
@@ -126,10 +136,10 @@ class ReviewsController {
             }
         }
     }
-    async deleteReview(req, res) {
+    async deleteLesson(req, res) {
         try {
             const id = req.params.id;
-            await reviewUseCase.deleteReview(id);
+            await lessonUseCase.deleteLesson(id);
             res.status(204).json({
                 message: `Operation successfully completed!`,
                 validationErrors: [],
@@ -147,4 +157,4 @@ class ReviewsController {
         }
     }
 }
-exports.ReviewsController = ReviewsController;
+exports.LessonsController = LessonsController;

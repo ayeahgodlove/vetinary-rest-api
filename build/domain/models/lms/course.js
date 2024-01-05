@@ -5,6 +5,9 @@ exports.emptyCourse = {
     id: "",
     title: "",
     description: "",
-    bannerImage: "",
-    authorId: ""
+    courseImage: "",
+    authorId: "",
+    price: 0,
+    startDate: new Date(),
+    completionDate: new Date()
 };

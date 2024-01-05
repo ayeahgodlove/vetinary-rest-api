@@ -16,6 +16,7 @@ const product_order_1 = require("./product-order");
 let Order = class Order extends sequelize_typescript_1.Model {
     userId;
     totalQtty;
+    discount;
     totalAmount;
     orderNo;
     username;
@@ -48,6 +49,12 @@ __decorate([
     }),
     __metadata("design:type", Number)
 ], Order.prototype, "totalQtty", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+    }),
+    __metadata("design:type", Number)
+], Order.prototype, "discount", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.DECIMAL,

@@ -47,6 +47,8 @@ export class CourseRequestDto {
       authorId: data.authorId,
       courseImage: data.courseImage,
       price:  Number(data.price),
+      completionDate: data.completionDate,
+      startDate: data.startDate
     };
   }
 }

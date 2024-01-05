@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsController = void 0;
 const product_1 = require("../../domain/models/product");
@@ -9,27 +12,22 @@ const product_request_dto_1 = require("../dtos/product-request.dto");
 const class_validator_1 = require("class-validator");
 const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
 const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
-const product_image_repository_1 = require("../../data/repositories/impl/product-image.repository");
-const product_image_usecase_1 = require("../../domain/usecases/product-image.usecase");
-const nanoid_1 = require("nanoid");
-const product_tag_1 = require("../../data/entities/product-tag");
+const path_1 = __importDefault(require("path"));
+const rimraf_1 = __importDefault(require("rimraf"));
 const productRepository = new product_repository_1.ProductRepository();
 const productUseCase = new product_usecase_1.ProductUseCase(productRepository);
 const productMapper = new mapper_1.ProductMapper();
-// product images
-const productImageRepository = new product_image_repository_1.ProductImageRepository();
-const productImageUseCase = new product_image_usecase_1.ProductImageUseCase(productImageRepository);
-const productImageMapper = new mapper_1.ProductImageMapper();
 //product tags
-const tagMapper = new mapper_1.TagMapper();
 class ProductsController {
     async createProduct(req, res) {
         const dto = new product_request_dto_1.ProductRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
-        const { productImages } = req.files;
+        const tags = JSON.parse(req.body.tags);
         if (!req.files) {
             throw new Error("Please select Images!");
         }
+        const { productImages } = req.files;
+        const productImagesStrArr = productImages.map((p) => p.filename);
         if (validationErrors.length > 0) {
             res.status(400).json({
                 validationErrors: (0, displayValidationErrors_1.displayValidationErrors)(validationErrors),
@@ -40,35 +38,14 @@ class ProductsController {
         }
         else {
             try {
-                const productResponse = await productUseCase.createProduct(dto.toData());
-                const arrObj = productImages.map((image) => {
-                    return {
-                        id: (0, nanoid_1.nanoid)(10),
-                        imageUrl: image.filename,
-                        productId: `${productResponse.id}`,
-                        productName: dto.toData().name,
-                    };
+                const productResponse = await productUseCase.createProduct({
+                    ...dto.toData(),
+                    tags,
+                    productImages: productImagesStrArr,
                 });
-                const productImageResponse = await productImageUseCase.createProductImages(arrObj);
-                const productImageDatas = productImageMapper.toDTOs(productImageResponse);
-                // add tags to product-tags
-                const tags = JSON.parse(req.body.tags);
-                const arry = tags.map(async (tag) => {
-                    return {
-                        tagId: tag,
-                        productId: `${productResponse.id}`,
-                    };
-                });
-                await product_tag_1.ProductTag.bulkCreate([...arry], {
-                    include: ["product"],
-                });
-                const tagRes = await productResponse.$get("tags");
-                const tagDtos = tagMapper.toDTOs(tagRes);
                 const obj = {
                     ...productResponse.toJSON(),
-                    productImages: productImageDatas,
                     reviews: [],
-                    tags: tagDtos,
                 };
                 res.status(201).json({
                     data: obj,
@@ -78,6 +55,11 @@ class ProductsController {
                 });
             }
             catch (error) {
+                const baseDirectory = "./public/uploads/products";
+                productImagesStrArr.forEach((filePath) => {
+                    const fullPath = path_1.default.join(baseDirectory, filePath);
+                    rimraf_1.default.sync(fullPath); // Delete each file using rimraf
+                });
                 res.status(400).json({
                     data: null,
                     message: error.message,
@@ -91,15 +73,6 @@ class ProductsController {
         try {
             const products = await productUseCase.getAll();
             const productsDTO = productMapper.toDTOs(products);
-            // const obj = await Promise.all(productsDTO.map(async (product) => {
-            //   const tags = await productUseCase.getTagsForProduct(product.id);
-            //   const productImages = await productUseCase.getImagesForProduct(product.id);
-            //   return {
-            //     ...product,
-            //     tags: tagMapper.toDTOs(tags),
-            //     productImages: productImageMapper.toDTOs(productImages)
-            //   };
-            // }))
             res.json({
                 data: productsDTO,
                 message: "Success",
@@ -223,6 +196,14 @@ class ProductsController {
     async deleteProduct(req, res) {
         try {
             const id = req.params.id;
+            const product = await productUseCase.getProductById(id);
+            if (product) {
+                const baseDirectory = "./public/uploads/products";
+                product.dataValues.productImages.forEach((filePath) => {
+                    const fullPath = path_1.default.join(baseDirectory, filePath);
+                    rimraf_1.default.sync(fullPath); // Delete each file using rimraf
+                });
+            }
             await productUseCase.deleteProduct(id);
             res.status(204).json({
                 message: `Operation successfully completed!`,

@@ -34,11 +34,11 @@ const category_1 = require("../../../data/entities/category");
 const dotenv = __importStar(require("dotenv"));
 const user_1 = require("../../../data/entities/user");
 const role_1 = require("../../../data/entities/role");
-const review_1 = require("../../../data/entities/review");
+const lesson_review_1 = require("../../../data/entities/lesson-review");
+const product_review_1 = require("../../../data/entities/product-review");
 const user_doc_1 = require("../../../data/entities/user-doc");
 const branch_1 = require("../../../data/entities/branch");
 const store_1 = require("../../../data/entities/store");
-const product_image_1 = require("../../../data/entities/product-image");
 const product_1 = require("../../../data/entities/product");
 const user_role_1 = require("../../../data/entities/user-role");
 const tag_1 = require("../../../data/entities/tag");
@@ -49,11 +49,16 @@ const post_tag_1 = require("../../../data/entities/post-tag");
 const document_tag_1 = require("../../../data/entities/document-tag");
 const banner_1 = require("../../../data/entities/banner");
 const sub_category_1 = require("../../../data/entities/sub-category");
-const product_tag_1 = require("../../../data/entities/product-tag");
 const user_store_1 = require("../../../data/entities/user-store");
 const order_1 = require("../../../data/entities/order");
 const payment_1 = require("../../../data/entities/payment");
 const product_order_1 = require("../../../data/entities/product-order");
+const course_1 = require("../../../data/entities/lms/course");
+const lesson_1 = require("../../../data/entities/lms/lesson");
+const enrollment_1 = require("../../../data/entities/lms/enrollment");
+const quiz_1 = require("../../../data/entities/lms/quiz");
+const appointment_1 = require("../../../data/entities/health/appointment");
+const consultation_1 = require("../../../data/entities/health/consultation");
 dotenv.config();
 class PostgresDbConfig {
     _sequelize;
@@ -65,7 +70,7 @@ class PostgresDbConfig {
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
             database: process.env.DB,
-            port: parseInt(process.env.DB_PORT || '5432', 10),
+            port: parseInt(process.env.DB_PORT || "5432", 10),
             host: process.env.HOST,
             dialect: "postgres",
             models: [
@@ -84,14 +89,21 @@ class PostgresDbConfig {
                 branch_1.Branch,
                 store_1.Store,
                 product_1.Product,
-                product_image_1.ProductImage,
-                product_tag_1.ProductTag,
                 user_store_1.UserStore,
-                review_1.Review,
+                product_review_1.ProductReview,
                 banner_1.Banner,
                 order_1.Order,
                 payment_1.Payment,
-                product_order_1.ProductOrder
+                product_order_1.ProductOrder,
+                // lms
+                course_1.Course,
+                lesson_1.Lesson,
+                enrollment_1.Enrollment,
+                quiz_1.Quiz,
+                lesson_review_1.LessonReview,
+                // health
+                appointment_1.Appointment,
+                consultation_1.Consultation
             ],
             logging: false,
             pool: {

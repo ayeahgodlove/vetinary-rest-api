@@ -1,7 +1,7 @@
 "use strict";
 // src/presentation/mappers/category-mapper.ts
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PaymentMapper = exports.OrderMapper = exports.ReviewMapper = exports.RoleMapper = exports.UserDocMapper = exports.ProductImageMapper = exports.ProductTagMapper = exports.ProductMapper = exports.StoreMapper = exports.BranchMapper = exports.TagMapper = exports.DocumentMapper = exports.CommentMapper = exports.UserMapper = exports.PostMapper = exports.SubCategoryMapper = exports.BannerMapper = exports.CategoryMapper = void 0;
+exports.ConsultationMapper = exports.AppointmentMapper = exports.QuizMapper = exports.EnrollmentMapper = exports.LessonMapper = exports.CourseMapper = exports.PaymentMapper = exports.OrderMapper = exports.ProductReviewMapper = exports.LessonReviewMapper = exports.RoleMapper = exports.UserDocMapper = exports.ProductMapper = exports.StoreMapper = exports.BranchMapper = exports.TagMapper = exports.DocumentMapper = exports.CommentMapper = exports.UserMapper = exports.PostMapper = exports.SubCategoryMapper = exports.BannerMapper = exports.CategoryMapper = void 0;
 class CategoryMapper {
     toDTO(category) {
         const entity = category.toJSON();
@@ -157,34 +157,6 @@ class ProductMapper {
     }
 }
 exports.ProductMapper = ProductMapper;
-class ProductTagMapper {
-    toDTO(productTag) {
-        const entity = productTag.toJSON();
-        return entity;
-    }
-    toDTOs(productTags) {
-        const _productTags = productTags.map((productTag) => {
-            const entity = productTag.toJSON();
-            return entity;
-        });
-        return _productTags;
-    }
-}
-exports.ProductTagMapper = ProductTagMapper;
-class ProductImageMapper {
-    toDTO(productImage) {
-        const entity = productImage.toJSON();
-        return entity;
-    }
-    toDTOs(productImages) {
-        const _productImages = productImages.map((productImage) => {
-            const entity = productImage.toJSON();
-            return entity;
-        });
-        return _productImages;
-    }
-}
-exports.ProductImageMapper = ProductImageMapper;
 class UserDocMapper {
     toDTO(userDoc) {
         const entity = userDoc.toJSON();
@@ -213,7 +185,7 @@ class RoleMapper {
     }
 }
 exports.RoleMapper = RoleMapper;
-class ReviewMapper {
+class LessonReviewMapper {
     toDTO(review) {
         const entity = review.toJSON();
         return entity;
@@ -226,7 +198,21 @@ class ReviewMapper {
         return _reviews;
     }
 }
-exports.ReviewMapper = ReviewMapper;
+exports.LessonReviewMapper = LessonReviewMapper;
+class ProductReviewMapper {
+    toDTO(review) {
+        const entity = review.toJSON();
+        return entity;
+    }
+    toDTOs(reviews) {
+        const _reviews = reviews.map((review) => {
+            const entity = review.toJSON();
+            return entity;
+        });
+        return _reviews;
+    }
+}
+exports.ProductReviewMapper = ProductReviewMapper;
 class OrderMapper {
     toDTO(order) {
         const entity = order.toJSON();
@@ -255,3 +241,90 @@ class PaymentMapper {
     }
 }
 exports.PaymentMapper = PaymentMapper;
+/**
+ * course module
+ */
+class CourseMapper {
+    toDTO(course) {
+        const entity = course.toJSON();
+        return entity;
+    }
+    toDTOs(courses) {
+        const _courses = courses.map((course) => {
+            const entity = course.toJSON();
+            return entity;
+        });
+        return _courses;
+    }
+}
+exports.CourseMapper = CourseMapper;
+class LessonMapper {
+    toDTO(lesson) {
+        const entity = lesson.toJSON();
+        return entity;
+    }
+    toDTOs(lessons) {
+        const _lessons = lessons.map((lesson) => {
+            const entity = lesson.toJSON();
+            return entity;
+        });
+        return _lessons;
+    }
+}
+exports.LessonMapper = LessonMapper;
+class EnrollmentMapper {
+    toDTO(enrollment) {
+        const entity = enrollment.toJSON();
+        return entity;
+    }
+    toDTOs(enrollments) {
+        const _enrollments = enrollments.map((enrollment) => {
+            const entity = enrollment.toJSON();
+            return entity;
+        });
+        return _enrollments;
+    }
+}
+exports.EnrollmentMapper = EnrollmentMapper;
+class QuizMapper {
+    toDTO(quiz) {
+        const entity = quiz.toJSON();
+        return entity;
+    }
+    toDTOs(quizes) {
+        const _quizes = quizes.map((quiz) => {
+            const entity = quiz.toJSON();
+            return entity;
+        });
+        return _quizes;
+    }
+}
+exports.QuizMapper = QuizMapper;
+class AppointmentMapper {
+    toDTO(appointment) {
+        const entity = appointment.toJSON();
+        return entity;
+    }
+    toDTOs(appointments) {
+        const _appointments = appointments.map((appointment) => {
+            const entity = appointment.toJSON();
+            return entity;
+        });
+        return _appointments;
+    }
+}
+exports.AppointmentMapper = AppointmentMapper;
+class ConsultationMapper {
+    toDTO(consultation) {
+        const entity = consultation.toJSON();
+        return entity;
+    }
+    toDTOs(consultations) {
+        const _consultations = consultations.map((consultation) => {
+            const entity = consultation.toJSON();
+            return entity;
+        });
+        return _consultations;
+    }
+}
+exports.ConsultationMapper = ConsultationMapper;
