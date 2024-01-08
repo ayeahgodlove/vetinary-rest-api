@@ -66,7 +66,7 @@ export class UsersController {
         };
 
         const activationToken = createActivationToken(user);
-        const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+        const activationUrl = `${process.env.APP_URL}/activation/${activationToken}`;
 
         await sendRegistrationMail(user.email, activationUrl);
         res.status(201).json({
